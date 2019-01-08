@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_return_uncounted,return_uncounted_access_rules,model_return_uncounted,group_return_uncounted,1,1,1,1
+access_return_uncounted_users_purchases,return_uncounted_access_rules_users_purchases,model_return_uncounted,purchase.group_purchase_user,1,0,0,0

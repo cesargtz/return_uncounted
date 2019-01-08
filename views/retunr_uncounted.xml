@@ -1,0 +1,99 @@
+<odoo>
+	<data>
+		<!-- explicit list view definition -->
+		<record id="seq_return_uncounted" model="ir.sequence">
+			<field name="name">Return Uncounted Code</field>
+			<field name="code">return.uncounted.code</field>
+			<field name="prefix">CMD</field>
+			<field name="padding">2</field>
+			<field name="implementation">no_gap</field>
+			<field name="number_increment">1</field>
+		</record>
+		<record model="ir.ui.view" id="return_uncounted_form_view">
+			<field name="name">Return Uncounted Form</field>
+			<field name="model">return.uncounted</field>
+			<field name="arch" type="xml">
+				<form>
+					<header>
+						<field name="state" widget="statusbar" />
+					</header>
+					<sheet>
+						<div class="oe_title">
+							<h1>
+								<label string="Regreso de maíz descontado - " />
+								<field name="name" class="oe_inline" readonly="1" />
+							</h1>
+						</div>
+					<group col="4">
+                        <field name="purchase_order" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
+                        <field name="return_tons" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
+                        <field name="datetime" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
+                    </group>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" groups="base.group_user" />
+						<field name="message_ids" widget="mail_thread" />
+					</div>
+				</form>
+			</field>
+		</record>
+		<record model="ir.ui.view" id="return_uncounted_list">
+			<field name="name">Return Uncounted List</field>
+			<field name="model">return.uncounted</field>
+			<field name="arch" type="xml">
+				<tree>
+                    <field name="name" string="Referencia" />
+					<field name="purchase_order"/>
+					<field name="return_tons" sum="return_tons"/>
+					<field name="datetime"/>
+				</tree>
+			</field>
+		</record>
+		<!-- actions opening views on models -->
+		<record model="ir.actions.act_window" id="return_uncounted_action_list_action">
+			<field name="name">Compensacion de maiz dañado</field>
+			<field name="res_model">return.uncounted</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+					Crea el primer movimiento.
+				</p>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="return_uncounted_search_view">
+			<field name="name">return.uncounted.search</field>
+			<field name="model">return.uncounted</field>
+			<field name="arch" type="xml">
+				<search>
+          <field name="name" string="Referencia"/>
+					<field name="purchase_order" string="Contrato de compra"/>
+					<field name="return_tons" string="toneladas Regresads"/>
+					<separator />
+					<group string="Group By">
+						<filter name="group_by_purchase" string="Contrato de Compra" context="{'group_by': 'purchase_order'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+		<menuitem id="return_uncounted.menu_return_uncounted" parent="vehicle_outlet.menu_outlets" name="Regreso de maíz descontado" action="return_uncounted_action_list_action" sequence="30" groups="group_return_uncounted" />
+
+		<!-- inherit purchase order return uncounted -->
+        <record model="ir.ui.view" id="return_uncounted_purchase_order">
+            <field name="name">return_uncounted.purchase_order</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <button name="action_view_invoice" position="after">
+                    <button type="object" class="oe_stat_button" nolabel="1" name="return_uncounted_tree"  icon="fa-mail-reply"   groups="return_uncounted.group_return_uncounted" attrs="{'invisible':[('return_uncounted_tons', '=', '0.0tn')]}">
+                        <field name="return_uncounted_tons" string="Regreso Desc" widget="statinfo"/>
+                    </button>
+                </button>
+            </field>
+        </record>
+        <!--  -->
+
+
+	</data>
+</odoo>
