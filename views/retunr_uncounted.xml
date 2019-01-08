@@ -77,7 +77,7 @@
 				</search>
 			</field>
 		</record>
-		<menuitem id="return_uncounted.menu_return_uncounted" parent="vehicle_outlet.menu_outlets" name="Regreso de maíz descontado" action="return_uncounted_action_list_action" sequence="30" groups="group_return_uncounted" />
+		<menuitem id="return_uncounted.menu_return_uncounted" parent="vehicle_reception.menu_receptions" name="Regreso de maíz descontado" action="return_uncounted_action_list_action" sequence="60" groups="group_return_uncounted" />
 
 		<!-- inherit purchase order return uncounted -->
         <record model="ir.ui.view" id="return_uncounted_purchase_order">
